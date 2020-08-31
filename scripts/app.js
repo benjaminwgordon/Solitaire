@@ -99,6 +99,9 @@ class Game{
         if(this.selectedCard){
             if(this.selectedCard.isValidChild(card)){
                 console.log("move to new location");
+                //find the index of the card in the tableau
+                
+
             }
             this.selectedCard = null;
         } else{
@@ -116,6 +119,16 @@ class Tableau {
         for (let i = 0; i < this.piles.length; i++){
             this.piles[i] = this.piles[i].concat(deck.deal(i + 1));
         }
+    }
+
+    //returns the index of the tableau that the specified card is in, or -1 if the card is not found
+    indexOf(card){
+        for (let i = 0; i < this.tableau.length; i++){
+            if (this.tableau[i].indexOf(card) !== -1){
+                return i;
+            }
+        }
+        return -1;
     }
 
     render(){
