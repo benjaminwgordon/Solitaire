@@ -10,7 +10,7 @@ class Card{
 
     render(){
         const $card = $("<div />").addClass("card");
-        $card.append($("<div />").text(this.suit).addClass("card__suit"))
+        $card.append($("<div />").addClass(`card__suit--${this.suit}`).addClass("card__suit"));
         $card.append($("<div />").text(this.value).addClass("card__value"))
         return $card;
     }
@@ -19,7 +19,7 @@ class Card{
 class Deck{
     constructor(){
         this.cards = [];
-        const suits = ["Spades", "Clubs", "Hearts", "Diamonds"];
+        const suits = ["spade", "club", "heart", "diamond"];
         const values = ['Ace',2,3,4,5,6,7,8,9,10,'Jack','Queen','King'];
         for (let suit of suits){
             for (let value of values){

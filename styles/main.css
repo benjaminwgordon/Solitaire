@@ -11,7 +11,6 @@
     width:25%;
 }
 
-
 .tableauContainer{
     display:flex;
     flex-direction:row;
@@ -33,6 +32,8 @@
     border-radius:15px;
     border:2px solid black;
     position:relative;
+    margin-top:0%;
+    margin-bottom: -120%;
 }
 
 .card__value{
@@ -43,6 +44,30 @@ left:5%;
 
 .card__suit{
 position:absolute;
-top:10%;
-left:5%;
+display:block;
+width:10%;
+height:10%;
+top:5%;
+right:10%;
 }
+
+.card__suit--club{
+    background-image:url(../card_images/club.svg);
+    background-repeat: no-repeat;
+}
+
+.card__suit--spade{
+    background-image:url(../card_images/spade.svg);
+    background-repeat: no-repeat;
+}
+
+.card__suit--heart{
+    background-image:url(../card_images/heart.svg);
+    background-repeat: no-repeat;
+}
+
+.card__suit--diamond{
+    background-image:url(../card_images/diamond.svg);
+    background-repeat: no-repeat;
+}
+
