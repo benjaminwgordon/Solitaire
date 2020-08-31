@@ -1,7 +1,8 @@
 /**
  * Solitaire App
  */
-
+const suits = ["spade", "club", "heart", "diamond"];
+const values = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K'];
 class Card{
     constructor(suit, value){
         this.suit = suit;
@@ -17,7 +18,6 @@ class Card{
 
     //checks if this card can be moved onto target card
     isValidChild(target){
-        const values = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K'];
         if (values.indexOf(this.value) !== values.indexOf(target.value) - 1){
             console.log(`invalid move target by value:\nfrom: ${this.value} to ${target.value}`);
             return false;
@@ -39,33 +39,12 @@ class Card{
             }
         }
     }
-
-    selectCard(){
-        if(game.selectedCard){
-            if(game.selectedCard.isValidChild(this)){
-                console.log("move to new location");
-                //find the index of the card in the tableau
-                const selectionTableauPile = game.tableau.indexOf(this);                
-                const targetTableauPile = game.tableau.indexOf(game.selectedCard);
-
-                game.tableau.piles[targetTableauPile].pop();
-                game.tableau.piles[selectionTableauPile].push(game.selectedCard);
-                game.tableau.render();
-            }
-            game.selectedCard = null;
-        } else{
-            game.selectedCard = this;
-        }   
-    }
 }
 
 class Deck{
     constructor(){
         this.cards = [];
         this.drawPile = [];
-        const suits = ["spade", "club", "heart", "diamond"];
-        const values = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K'];
-        
         for (let suit of suits){
             for (let value of values){
                 this.cards.push(new Card(suit, value));
@@ -107,7 +86,11 @@ class Deck{
             $drawPile.append(this.drawPile[this.drawPile.length - 1].render());
             $drawPile.on("click", () => {
                 console.log(`called on ${this}`)
-                this.drawPile[this.drawPile.length - 1].selectCard();
+                if (!this.selectedCard){
+                    this.selectedCard = this.drawPile[this.drawPile.length - 1];
+                } else{
+                    this.selectedCard = null;
+                }
             })
         }
         $deck.on("click", () => {
@@ -166,7 +149,26 @@ class Tableau {
             const $tableau = $("<div />").addClass("tableau");
             for(let card of tableau){
                 $tableau.append(card.render().on("click", () => {
-                    card.selectCard()
+                    if(!game.selectedCard){
+                        game.selectedCard = card;
+                    } else{
+                        if (game.selectedCard.isValidChild(card)){
+                            console.log("legal move, moving...");
+                            const tableauLocation = game.tableau.indexOf(game.selectedCard);
+                            //selected card was in a tableau
+                            if (tableauLocation !== -1){
+                                const indexInTableauPile = game.tableau.piles[tableauLocation].indexOf(game.selectedCard);
+                                game.tableau.piles[this.indexOf(card)] = game.tableau.piles[this.indexOf(card)].concat(game.tableau.piles[tableauLocation].splice(indexInTableauPile,1));
+                            } 
+                            //selected card was NOT in a tableau
+                            else{
+
+                            }
+                        } else{
+                            console.log("illegal move");
+                        }
+                    }
+                    this.render();
                 }));
             }
             $tableauContainer.append($tableau);
@@ -185,6 +187,22 @@ class Foundations {
         $foundationContainer.empty();
         for(let foundation of this.piles){
             const $foundation = $("<div />").addClass("foundation");
+            $foundation.on("click", () => {
+                if(game.selectedCard){
+                    if (game.selectedCard.suit === foundation[foundation.length - 1].suit){
+                        if (values.indexOf(game.selectedCard.value) === values.indexOf(foundation[foundation.length - 1].value + 1)){
+                            console.log("valid move to foundation");
+                            foundation.push(foundation[foundation.length - 1].pop());
+                        } else{
+                            console.log("wrong value");
+                        }
+                    } else{
+                        console.log("wrong suit");
+                    }
+                } else{
+                    console.log("no card selected");
+                }
+            });
             for(let card of foundation){
                 $foundation.append(card.render());
             }
