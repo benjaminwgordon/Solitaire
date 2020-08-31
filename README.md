@@ -19,14 +19,14 @@ The game ends when all cards are sorted successfully into the 4 sorted piles at 
 ## Basic Design
 Standard game of solitaire, modeled on the classic windows XP Klondike solitaire app
 
-MVP features:
+## MVP features:
 -draw 1
 -card stacks
 -2 click movement (1 click to select a card/card stack, a second click to select a destination)
 -basic solitaire functionality
 -reset game
 
-Icebox: (I think Ill have time to implement all of this)
+## Icebox Features: (I think I'll have time to implement all of these and more)
 -draw 3
 -click and drag movement
 -auto finish completed games
