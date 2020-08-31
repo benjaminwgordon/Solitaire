@@ -26,14 +26,14 @@ class Card{
                 if(target.suit === "heart" || target.suit === "diamond"){
                     return true;
                 } else{
-                    console.log(`invalid move target by suit:\nfrom:${this.suit} to ${target.suit}`)
+                    console.log(`invalid move target by suit:\nfrom:${this.suit} to: ${target.suit}`)
                     return false;
                 }
             } else{
                 if(target.suit === "spade" || target.suit === "club"){
                     return true;
                 } else{
-                    console.log(`invalid move target by suit:\nfrom:${this.suit} to ${target.suit}`)
+                    console.log(`invalid move target by suit:\nfrom:${this.suit} to: ${target.suit}`)
                     return false;
                 }
             }
@@ -81,11 +81,12 @@ class Game{
     constructor(){
         this.deck = new Deck();
         //tableau are the piles of cards dealt at the beginning of the game
-        this.tableau = new Tableau();
+        this.tableau = new Tableau(this);
         //foundations are the 4 empty piles that the player builds into throughout the game
         this.foundations = new Foundations();
+        this.selectedCard = null;
     }
-    
+
     render(){
         const $game = $("<div />").addClass("game");
         $game.append(this.deck.render());
@@ -93,11 +94,23 @@ class Game{
         $game.append(this.foundations.render());
         $("body").append($game);
     }
+
+    selectCard(card){
+        if(this.selectedCard){
+            if(this.selectedCard.isValidChild(card)){
+                console.log("move to new location");
+            }
+            this.selectedCard = null;
+        } else{
+            this.selectedCard = card;
+        }   
+    }
 }
 
 class Tableau {
-    constructor(){
+    constructor(game){
         this.piles = [[],[],[],[],[],[],[]];
+        this.game = game;
     }
     deal(deck){
         for (let i = 0; i < this.piles.length; i++){
@@ -110,7 +123,9 @@ class Tableau {
         for(let tableau of this.piles){
             const $tableau = $("<div />").addClass("tableau");
             for(let card of tableau){
-                $tableau.append(card.render());
+                $tableau.append(card.render().on("click", () => {
+                    this.game.selectCard(card)
+                }));
             }
             $tableauContainer.append($tableau);
         }
