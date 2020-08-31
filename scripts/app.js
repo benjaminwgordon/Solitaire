@@ -160,9 +160,11 @@ class Tableau {
                                 const indexInTableauPile = game.tableau.piles[tableauLocation].indexOf(game.selectedCard);
                                 game.tableau.piles[this.indexOf(card)] = game.tableau.piles[this.indexOf(card)].concat(game.tableau.piles[tableauLocation].splice(indexInTableauPile,1));
                             } 
-                            //selected card was NOT in a tableau
-                            else{
+                            //selected card was The top card of the draw pile
+                            else if (game.selectedCard === game.deck.drawPile[game.deck.drawPile.length - 1]){
 
+                            } else{
+                                console.log("not sure where selected card came from");
                             }
                         } else{
                             console.log("illegal move");
@@ -188,20 +190,51 @@ class Foundations {
         for(let foundation of this.piles){
             const $foundation = $("<div />").addClass("foundation");
             $foundation.on("click", () => {
+
+
+
                 if(game.selectedCard){
-                    if (game.selectedCard.suit === foundation[foundation.length - 1].suit){
-                        if (values.indexOf(game.selectedCard.value) === values.indexOf(foundation[foundation.length - 1].value + 1)){
-                            console.log("valid move to foundation");
-                            foundation.push(foundation[foundation.length - 1].pop());
+                    if (game.selectedCard.isValidChild(card)){
+                        console.log("legal move, moving...");
+                        const tableauLocation = game.tableau.indexOf(game.selectedCard);
+                        //selected card was in a tableau
+                        if (tableauLocation !== -1){
+                            const indexInTableauPile = game.tableau.piles[tableauLocation].indexOf(game.selectedCard);
+                            game.tableau.piles[this.indexOf(card)] = game.tableau.piles[this.indexOf(card)].concat(game.tableau.piles[tableauLocation].splice(indexInTableauPile,1));
+                        } 
+                        //selected card was The top card of the draw pile
+                        else if (game.selectedCard === game.deck.drawPile[game.deck.drawPile.length - 1]){
+
                         } else{
-                            console.log("wrong value");
+                            console.log("not sure where selected card came from");
                         }
                     } else{
-                        console.log("wrong suit");
+                        console.log("illegal move");
                     }
-                } else{
-                    console.log("no card selected");
                 }
+                this.render();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             });
             for(let card of foundation){
                 $foundation.append(card.render());
@@ -224,3 +257,6 @@ const game = new Game();
 game.deck.shuffle();
 game.tableau.deal(game.deck);
 game.render();
+
+
+
