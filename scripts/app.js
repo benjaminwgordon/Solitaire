@@ -103,10 +103,14 @@ class Deck{
         $deckAndDraw.empty();
         const $deck = ($("<div />").addClass("deck"));
         const $drawPile = ($("<div />").addClass("drawPile"));
-        $drawPile.on("click", ".drawPile", () => {
-            this.drawPile[this.drawPile.length - 1].selectCard();
-        })
-        $deck.on("click", ()=>{
+        if(this.drawPile[0]){
+            $drawPile.append(this.drawPile[this.drawPile.length - 1].render());
+            $drawPile.on("click", () => {
+                console.log(`called on ${this}`)
+                this.drawPile[this.drawPile.length - 1].selectCard();
+            })
+        }
+        $deck.on("click", () => {
             this.draw();
         });
         $deckAndDraw.append($deck);
