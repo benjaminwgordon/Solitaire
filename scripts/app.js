@@ -100,8 +100,12 @@ class Game{
             if(this.selectedCard.isValidChild(card)){
                 console.log("move to new location");
                 //find the index of the card in the tableau
-                
+                const selectionTableauPile = this.tableau.indexOf(card);                
+                const targetTableauPile = this.tableau.indexOf(this.selectedCard);
 
+                this.tableau.piles[targetTableauPile].pop();
+                this.tableau.piles[selectionTableauPile].push(this.selectedCard);
+                this.tableau.render();
             }
             this.selectedCard = null;
         } else{
@@ -123,8 +127,8 @@ class Tableau {
 
     //returns the index of the tableau that the specified card is in, or -1 if the card is not found
     indexOf(card){
-        for (let i = 0; i < this.tableau.length; i++){
-            if (this.tableau[i].indexOf(card) !== -1){
+        for (let i = 0; i < this.piles.length; i++){
+            if (this.piles[i].indexOf(card) !== -1){
                 return i;
             }
         }
@@ -132,7 +136,8 @@ class Tableau {
     }
 
     render(){
-        const $tableauContainer = $("<div />").addClass("tableauContainer");
+        const $tableauContainer = $(".tableauContainer").length < 1 ? $("<div />").addClass("tableauContainer") : $(".tableauContainer");
+        $tableauContainer.empty();
         for(let tableau of this.piles){
             const $tableau = $("<div />").addClass("tableau");
             for(let card of tableau){
