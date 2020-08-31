@@ -14,6 +14,31 @@ class Card{
         $card.append($("<div />").text(this.value).addClass("card__value"))
         return $card;
     }
+
+    //checks if this card can be moved onto target card
+    isValidChild(target){
+        const values = ['Ace',2,3,4,5,6,7,8,9,10,'Jack','Queen','King'];
+        if (values.indexOf(this.value) !== values.indexOf(target.value) - 1){
+            console.log(`invalid move target by value:\nfrom: ${this.value} to ${target.value}`);
+            return false;
+        } else{
+            if (this.suit === "spade" || this.suit === "club"){
+                if(target.suit === "heart" || target.suit === "diamond"){
+                    return true;
+                } else{
+                    console.log(`invalid move target by suit:\nfrom:${this.suit} to ${target.suit}`)
+                    return false;
+                }
+            } else{
+                if(target.suit === "spade" || target.suit === "club"){
+                    return true;
+                } else{
+                    console.log(`invalid move target by suit:\nfrom:${this.suit} to ${target.suit}`)
+                    return false;
+                }
+            }
+        }
+    }
 }
 
 class Deck{
@@ -60,10 +85,7 @@ class Game{
         //foundations are the 4 empty piles that the player builds into throughout the game
         this.foundations = new Foundations();
     }
-    tableauDeal(){
-
-    }
-
+    
     render(){
         const $game = $("<div />").addClass("game");
         $game.append(this.deck.render());
