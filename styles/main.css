@@ -1,0 +1,30 @@
+
+.foundationContainer{
+    display:flex;
+    flex-direction:row;
+    width: 800px;
+}
+
+.foundation{
+    display:flex;
+    flex-direction:column;
+    width:25%;
+}
+
+
+.tableauContainer{
+    display:flex;
+    flex-direction:row;
+    width: 1400px;
+}
+
+.tableau{
+    display:flex;
+    flex-direction:column;
+    width:25%;
+}
+
+.card{
+    display: inline-block;
+    align-self: flex-start;
+}
