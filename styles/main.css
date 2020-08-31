@@ -1,20 +1,38 @@
-
-.foundationContainer{
+.game{
     display:flex;
     flex-direction:row;
-    width: 800px;
+    flex-wrap: wrap;
+}
+.deck-and-draw{
+    display:flex;
+}
+.deck{
+    width:200px;
+    height:300px;
+    background-color:#ff0000;
+    border-radius:15px;
+    border:2px solid black;
 }
 
-.foundation{
-    display:flex;
-    flex-direction:column;
-    width:25%;
+.drawPile{
+    width:200px;
+    height:300px;
+    border-radius:15px;
+    border:2px solid black;
+    position:relative;
+}
+
+.drawPile > * {
+    position:absolute;
+    top:0;
+    left:0;
 }
 
 .tableauContainer{
     display:flex;
+    justify-content:space-between;
     flex-direction:row;
-    width: 1400px;
+    width:100%;
 }
 
 .tableau{
@@ -25,7 +43,6 @@
 
 .card{
     display: inline-block;
-    align-self: flex-start;
     width:200px;
     height:300px;
     background-color:#fcffab;
@@ -33,7 +50,7 @@
     border:2px solid black;
     position:relative;
     margin-top:0%;
-    margin-bottom: -120%;
+    margin-bottom: -260px;
 }
 
 .card__value{
@@ -71,3 +88,27 @@ right:10%;
     background-repeat: no-repeat;
 }
 
+
+.foundationContainer{
+    display:flex;
+    flex-direction:row;
+    width: 800px;
+    height:300px;
+}
+
+.foundation{
+    width:25%;
+}
+
+.foundation--empty{
+    display: inline-block;
+    align-self: flex-start;
+    width:200px;
+    height:300px;
+    background-color:#cccccc;
+    border-radius:15px;
+    border:2px solid black;
+    position:relative;
+    margin-top:0%;
+    margin-bottom: -120%;
+}

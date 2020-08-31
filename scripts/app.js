@@ -17,7 +17,7 @@ class Card{
 
     //checks if this card can be moved onto target card
     isValidChild(target){
-        const values = ['Ace',2,3,4,5,6,7,8,9,10,'Jack','Queen','King'];
+        const values = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K'];
         if (values.indexOf(this.value) !== values.indexOf(target.value) - 1){
             console.log(`invalid move target by value:\nfrom: ${this.value} to ${target.value}`);
             return false;
@@ -39,13 +39,33 @@ class Card{
             }
         }
     }
+
+    selectCard(){
+        if(game.selectedCard){
+            if(game.selectedCard.isValidChild(this)){
+                console.log("move to new location");
+                //find the index of the card in the tableau
+                const selectionTableauPile = game.tableau.indexOf(this);                
+                const targetTableauPile = game.tableau.indexOf(game.selectedCard);
+
+                game.tableau.piles[targetTableauPile].pop();
+                game.tableau.piles[selectionTableauPile].push(game.selectedCard);
+                game.tableau.render();
+            }
+            game.selectedCard = null;
+        } else{
+            game.selectedCard = this;
+        }   
+    }
 }
 
 class Deck{
     constructor(){
         this.cards = [];
+        this.drawPile = [];
         const suits = ["spade", "club", "heart", "diamond"];
-        const values = ['Ace',2,3,4,5,6,7,8,9,10,'Jack','Queen','King'];
+        const values = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K'];
+        
         for (let suit of suits){
             for (let value of values){
                 this.cards.push(new Card(suit, value));
@@ -68,12 +88,30 @@ class Deck{
         }
         return this.cards;
     }
+
+    draw(){
+        this.drawPile.push(this.deal(1)[0]);
+        this.render();
+    }
+
     deal(num){
         return this.cards.splice(0,num);
     }
 
     render(){
-        return $("<div />").addClass("card--back");
+        const $deckAndDraw = $(".deck-and-draw").length > 0 ? $(".deck-and-draw") : $("<div />").addClass("deck-and-draw");
+        $deckAndDraw.empty();
+        const $deck = ($("<div />").addClass("deck"));
+        const $drawPile = ($("<div />").addClass("drawPile"));
+        $drawPile.on("click", ".drawPile", () => {
+            this.drawPile[this.drawPile.length - 1].selectCard();
+        })
+        $deck.on("click", ()=>{
+            this.draw();
+        });
+        $deckAndDraw.append($deck);
+        $deckAndDraw.append($drawPile);
+        return $deckAndDraw;
     }
 }
 
@@ -90,27 +128,9 @@ class Game{
     render(){
         const $game = $("<div />").addClass("game");
         $game.append(this.deck.render());
-        $game.append(this.tableau.render());
         $game.append(this.foundations.render());
+        $game.append(this.tableau.render());
         $("body").append($game);
-    }
-
-    selectCard(card){
-        if(this.selectedCard){
-            if(this.selectedCard.isValidChild(card)){
-                console.log("move to new location");
-                //find the index of the card in the tableau
-                const selectionTableauPile = this.tableau.indexOf(card);                
-                const targetTableauPile = this.tableau.indexOf(this.selectedCard);
-
-                this.tableau.piles[targetTableauPile].pop();
-                this.tableau.piles[selectionTableauPile].push(this.selectedCard);
-                this.tableau.render();
-            }
-            this.selectedCard = null;
-        } else{
-            this.selectedCard = card;
-        }   
     }
 }
 
@@ -142,7 +162,7 @@ class Tableau {
             const $tableau = $("<div />").addClass("tableau");
             for(let card of tableau){
                 $tableau.append(card.render().on("click", () => {
-                    this.game.selectCard(card)
+                    card.selectCard()
                 }));
             }
             $tableauContainer.append($tableau);
@@ -157,14 +177,28 @@ class Foundations {
     }
 
     render(){
-        const $foundationContainer = $("<div />").addClass("foundationContainer");
+        const $foundationContainer = $(".foundationContainer").length < 1 ? $("<div />").addClass("foundationContainer") : $(".foundationContainer");
+        $foundationContainer.empty();
         for(let foundation of this.piles){
             const $foundation = $("<div />").addClass("foundation");
             for(let card of foundation){
                 $foundation.append(card.render());
+            }
+            for(let foundationSlot of $foundation){
+                const $foundationSlot = $(foundationSlot);
+                if($foundationSlot.first()){
+                    $foundationSlot.addClass('foundation--empty');
+                } else{
+                    $foundationSlot.removeClass('foundation--empty');
+                }
             }
             $foundationContainer.append($foundation);
         }
         return $foundationContainer;
     }
 }
+
+const game = new Game();
+game.deck.shuffle();
+game.tableau.deal(game.deck);
+game.render();
