@@ -27,4 +27,22 @@
 .card{
     display: inline-block;
     align-self: flex-start;
+    width:200px;
+    height:300px;
+    background-color:#fcffab;
+    border-radius:15px;
+    border:2px solid black;
+    position:relative;
+}
+
+.card__value{
+position:absolute;
+top:5%;
+left:5%;
+}
+
+.card__suit{
+position:absolute;
+top:10%;
+left:5%;
 }

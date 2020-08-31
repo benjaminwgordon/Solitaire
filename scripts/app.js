@@ -9,7 +9,10 @@ class Card{
     }
 
     render(){
-        return $("<div />").addClass("card").text(this.value + " : " + this.suit);
+        const $card = $("<div />").addClass("card");
+        $card.append($("<div />").text(this.suit).addClass("card__suit"))
+        $card.append($("<div />").text(this.value).addClass("card__value"))
+        return $card;
     }
 }
 
