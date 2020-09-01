@@ -114,5 +114,12 @@ right:10%;
 }
 
 .card--face-down{
-    filter:grayscale(100%);
+    filter: hue-rotate(-120deg);
+}
+
+.card--face-down > *{
+    display:none;
+}
+.card--selected{
+    filter: hue-rotate(90deg)
 }
