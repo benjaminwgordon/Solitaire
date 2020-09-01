@@ -70,11 +70,15 @@ class Deck{
 
     draw(){
         this.drawPile.push(this.deal(1)[0]);
-        this.render();
+        game.render();
     }
 
     deal(num){
-        return this.cards.splice(0,num);
+        if(this.cards.length === 0){
+            this.cards.push(...this.drawPile.reverse());
+            this.drawPile = [];
+        }
+        return this.cards.splice(this.cards.length - num,num);
     }
 
     render(){
@@ -85,11 +89,10 @@ class Deck{
         if(this.drawPile[0]){
             $drawPile.append(this.drawPile[this.drawPile.length - 1].render());
             $drawPile.on("click", () => {
-                console.log(`called on ${this}`)
-                if (!this.selectedCard){
-                    this.selectedCard = this.drawPile[this.drawPile.length - 1];
+                if (!game.selectedCard){
+                    game.selectedCard = this.drawPile[this.drawPile.length - 1];
                 } else{
-                    this.selectedCard = null;
+                    game.selectedCard = null;
                 }
             })
         }
@@ -136,9 +139,11 @@ class Tableau {
     indexOf(card){
         for (let i = 0; i < this.piles.length; i++){
             if (this.piles[i].indexOf(card) !== -1){
+                console.log("found card in pile " + i)
                 return i;
             }
         }
+        console.log("did not find card");
         return -1;
     }
 
@@ -162,15 +167,17 @@ class Tableau {
                             } 
                             //selected card was The top card of the draw pile
                             else if (game.selectedCard === game.deck.drawPile[game.deck.drawPile.length - 1]){
-
+                                console.log("moving from draw pile to tableau");
+                                game.tableau.piles[game.tableau.indexOf(card)].push(game.deck.drawPile.pop());
                             } else{
                                 console.log("not sure where selected card came from");
                             }
                         } else{
                             console.log("illegal move");
                         }
+                        game.selectedCard = null;
                     }
-                    this.render();
+                    game.render();
                 }));
             }
             $tableauContainer.append($tableau);
@@ -190,62 +197,56 @@ class Foundations {
         for(let foundation of this.piles){
             const $foundation = $("<div />").addClass("foundation");
             $foundation.on("click", () => {
-
-
-
+                console.log("foundation clicked");
                 if(game.selectedCard){
-                    if (game.selectedCard.isValidChild(card)){
-                        console.log("legal move, moving...");
+                    //put ace into empty pile
+                    if (foundation.length === 0){
+                        if( game.selectedCard.value === "A"){
+                        console.log("empty foundation")
+                        const tableauLocation = game.tableau.indexOf(game.selectedCard);
+                            //selected card was in a tableau
+                            if (tableauLocation !== -1){
+                                const indexInTableauPile = game.tableau.piles[tableauLocation].indexOf(game.selectedCard);
+                                foundation.push(game.tableau.piles[tableauLocation].pop());
+                            } 
+                            //selected card was The top card of the draw pile
+                            else if (game.selectedCard === game.deck.drawPile[game.deck.drawPile.length - 1]){
+                                console.log("moving from draw pile to tableau");
+                                foundation.push(game.deck.drawPile.pop());
+                            } else{
+                                console.log("not sure where selected card came from");
+                            }
+                        } else{
+                            console.log("foundaiton empty but not ace chosen");
+                        }
+                    } else if((foundation[0].suit === game.selectedCard.suit && values.indexOf(game.selectedCard.value) === values.indexOf(foundation[foundation.length - 1].value) + 1)){
                         const tableauLocation = game.tableau.indexOf(game.selectedCard);
                         //selected card was in a tableau
                         if (tableauLocation !== -1){
                             const indexInTableauPile = game.tableau.piles[tableauLocation].indexOf(game.selectedCard);
-                            game.tableau.piles[this.indexOf(card)] = game.tableau.piles[this.indexOf(card)].concat(game.tableau.piles[tableauLocation].splice(indexInTableauPile,1));
+                            foundation.push(game.tableau.piles[tableauLocation].pop());
                         } 
                         //selected card was The top card of the draw pile
                         else if (game.selectedCard === game.deck.drawPile[game.deck.drawPile.length - 1]){
-
+                            console.log("moving from draw pile to tableau");
+                            foundation.push(game.deck.drawPile.pop());
                         } else{
                             console.log("not sure where selected card came from");
                         }
                     } else{
-                        console.log("illegal move");
+                        console.log("move not legal")
                     }
-                }
-                this.render();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            });
-            for(let card of foundation){
-                $foundation.append(card.render());
-            }
-            for(let foundationSlot of $foundation){
-                const $foundationSlot = $(foundationSlot);
-                if($foundationSlot.first()){
-                    $foundationSlot.addClass('foundation--empty');
-                } else{
-                    $foundationSlot.removeClass('foundation--empty');
-                }
+                game.selectedCard = null;
+                game.render();
+            }});
+            if(foundation[0]){
+                $foundation.addClass("card");
+                const $foundationValue = $("<div />").text(foundation[foundation.length - 1].value).addClass("card__value");;
+                const $foundationSuit = $("<div />").addClass("card__suit--" + foundation[foundation.length - 1].suit).addClass("card__suit");
+                $foundation.append($foundationValue);
+                $foundation.append($foundationSuit);
+            } else{
+                $foundation.removeClass().addClass("foundation--empty");
             }
             $foundationContainer.append($foundation);
         }
