@@ -1,12 +1,16 @@
+body{
+    background-color:rgb(34, 92, 34)
+}
 .game{
     display:flex;
-    flex-direction:row;
-    flex-wrap: wrap;
+    flex-direction:column;
 }
 .deck-and-draw{
     display:flex;
+    justify-content: space-between;
 }
 .deck{
+    margin-right: 75px;
     width:200px;
     height:300px;
     background-color:#ff0000;
@@ -32,13 +36,13 @@
     display:flex;
     justify-content:space-between;
     flex-direction:row;
-    width:100%;
+    width:75%;
+    margin:auto;
 }
 
 .tableau{
     display:flex;
     flex-direction:column;
-    width:25%;
 }
 
 .card{
@@ -57,13 +61,14 @@
 position:absolute;
 top:5%;
 left:5%;
+font-size: 1.5em;
 }
 
 .card__suit{
 position:absolute;
 display:block;
-width:10%;
-height:10%;
+width:15%;
+height:15%;
 top:5%;
 right:10%;
 }
@@ -92,12 +97,12 @@ right:10%;
 .foundationContainer{
     display:flex;
     flex-direction:row;
-    width: 800px;
-    height:300px;
+    justify-content: space-between;
+    width:56%;
 }
 
 .foundation{
-    width:25%;
+    max-width:200px;
 }
 
 .foundation--empty{
@@ -122,4 +127,15 @@ right:10%;
 }
 .card--selected{
     filter: hue-rotate(90deg)
+}
+
+.top-row{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 75px;
+    width: 75%;
+    margin:auto;
+    margin-top:75px;
+    margin-bottom: 75px;
 }

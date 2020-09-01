@@ -76,17 +76,23 @@ class Deck{
     }
 
     draw(){
-        this.drawPile.push(this.deal(1)[0]);
-        this.drawPile[this.drawPile.length - 1].faceUp = true;
+        console.log(this.cards.length)
+        const topDeck = this.deal(1)[0];
+        this.drawPile.push(topDeck);
+        if (this.drawPile.length > 0){
+            this.drawPile[this.drawPile.length - 1].faceUp = true;
+        }
         game.render();
     }
 
     deal(num){
         if(this.cards.length === 0){
-            this.cards.push(...this.drawPile.reverse());
+            this.cards = [...this.drawPile.reverse()];
+            console.log(this.cards);
+
             this.drawPile = [];
         }
-        return this.cards.splice(this.cards.length - num,num);
+        return this.cards.splice(this.cards.length - num);
     }
 
     render(){
@@ -125,8 +131,10 @@ class Game{
 
     render(){
         const $game = $(".game").length > 0 ? $(".game") : $("<div />").addClass("game");
-        $game.append(this.deck.render());
-        $game.append(this.foundations.render());
+        const $topRow = $(".top-row").length > 0 ? $(".top-row") : $("<div />").addClass("top-row");
+        $game.append($topRow);
+        $topRow.append(this.deck.render());
+        $topRow.append(this.foundations.render());
         $game.append(this.tableau.render());
         $("body").append($game);
     }
@@ -165,7 +173,6 @@ class Tableau {
             $tableau.on("click", (e) => {
                 if(game.selectedCard){
                     if (tableau.length === 0 && game.selectedCard.value === "K"){
-                        console.log("entered");
                         const tableauLocation = game.tableau.indexOf(game.selectedCard);
                         //selected card was in a tableau
                         if (tableauLocation !== -1){
@@ -192,7 +199,6 @@ class Tableau {
                             game.selectedCard = card;
                         } else{
                             if (game.selectedCard.isValidChild(card)){
-                                console.log("legal move, moving...");
                                 const tableauLocation = game.tableau.indexOf(game.selectedCard);
                                 //selected card was in a tableau
                                 if (tableauLocation !== -1){
@@ -252,7 +258,6 @@ class Foundations {
         for(let foundation of this.piles){
             const $foundation = $("<div />").addClass("foundation");
             $foundation.on("click", () => {
-                console.log("foundation clicked");
                 if(game.selectedCard){
                     //put ace into empty pile
                     if (foundation.length === 0){
@@ -309,8 +314,7 @@ class Foundations {
 }
 
 const game = new Game();
-//game.deck.shuffle();
-game.deck.cards.reverse();
+game.deck.shuffle();
 game.tableau.deal(game.deck);
 game.render();
 
