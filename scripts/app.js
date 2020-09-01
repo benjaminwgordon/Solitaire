@@ -7,12 +7,16 @@ class Card{
     constructor(suit, value){
         this.suit = suit;
         this.value = value;
+        this.faceUp = false;
     }
 
     render(){
         const $card = $("<div />").addClass("card");
         $card.append($("<div />").addClass(`card__suit--${this.suit}`).addClass("card__suit"));
         $card.append($("<div />").text(this.value).addClass("card__value"))
+        if(!this.faceUp){
+            $card.addClass("card--face-down");
+        }
         return $card;
     }
 
@@ -70,6 +74,7 @@ class Deck{
 
     draw(){
         this.drawPile.push(this.deal(1)[0]);
+        this.drawPile[this.drawPile.length - 1].faceUp = true;
         game.render();
     }
 
@@ -129,9 +134,13 @@ class Tableau {
         this.piles = [[],[],[],[],[],[],[]];
         this.game = game;
     }
+
     deal(deck){
         for (let i = 0; i < this.piles.length; i++){
             this.piles[i] = this.piles[i].concat(deck.deal(i + 1));
+        }
+        for(let i = 0; i < this.piles.length; i++){
+            this.piles[i][this.piles[i].length - 1].faceUp = true;
         }
     }
 
@@ -163,7 +172,19 @@ class Tableau {
                             //selected card was in a tableau
                             if (tableauLocation !== -1){
                                 const indexInTableauPile = game.tableau.piles[tableauLocation].indexOf(game.selectedCard);
-                                game.tableau.piles[this.indexOf(card)] = game.tableau.piles[this.indexOf(card)].concat(game.tableau.piles[tableauLocation].splice(indexInTableauPile,1));
+                                tableau.push(...game.tableau.piles[tableauLocation].splice(indexInTableauPile));
+                            } 
+                            //selected card was The top card of the draw pile
+                            else if (game.selectedCard === game.deck.drawPile[game.deck.drawPile.length - 1]){
+                                console.log("moving from draw pile to tableau");
+                                game.tableau.piles[game.tableau.indexOf(card)].push(game.deck.drawPile.pop());
+                            } else{
+                                console.log("not sure where selected card came from");
+                            }
+                        } else if (tableau.length === 0 && game.selectedCard.suit === "K"){
+                            if (tableauLocation !== -1){
+                                const indexInTableauPile = game.tableau.piles[tableauLocation].indexOf(game.selectedCard);
+                                tableau.push(...game.tableau.piles[tableauLocation].splice(indexInTableauPile));
                             } 
                             //selected card was The top card of the draw pile
                             else if (game.selectedCard === game.deck.drawPile[game.deck.drawPile.length - 1]){
@@ -177,6 +198,7 @@ class Tableau {
                         }
                         game.selectedCard = null;
                     }
+                    this.checkForEmptyPiles();
                     game.render();
                 }));
             }
@@ -184,11 +206,30 @@ class Tableau {
         }
         return $tableauContainer;
     }
+
+    //goes thru tableau and flips bottom cards of empty stacks
+    checkForEmptyPiles(){
+        for(let pile of this.piles){
+            if(pile.length > 0){
+                pile[pile.length - 1].faceUp = true;
+            }
+        }
+    }
 }
 
 class Foundations {
     constructor(){
         this.piles = [[],[],[],[]];
+    }
+
+    isGameWon(){
+        for (let pile of this.piles){
+            if (pile.length === 13){
+                return true;
+            } else {
+                return false
+            }
+        }
     }
 
     render(){
@@ -236,6 +277,7 @@ class Foundations {
                     } else{
                         console.log("move not legal")
                     }
+                game.tableau.checkForEmptyPiles();
                 game.selectedCard = null;
                 game.render();
             }});

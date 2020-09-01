@@ -112,3 +112,7 @@ right:10%;
     margin-top:0%;
     margin-bottom: -120%;
 }
+
+.card--face-down{
+    filter:grayscale(100%);
+}
