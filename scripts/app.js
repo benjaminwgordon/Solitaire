@@ -161,6 +161,27 @@ class Tableau {
         $tableauContainer.empty();
         for(let tableau of this.piles){
             const $tableau = $("<div />").addClass("tableau");
+            $tableau.on("click", () => {
+                console.log("caled")
+                console.log(tableau);
+                if (tableau.length === 0 && game.selectedCard.value === "K"){
+                    console.log("entered");
+                    const tableauLocation = game.tableau.indexOf(game.selectedCard);
+                    //selected card was in a tableau
+                    if (tableauLocation !== -1){
+                        const indexInTableauPile = game.tableau.piles[tableauLocation].indexOf(game.selectedCard);
+                        tableau.push(...game.tableau.piles[tableauLocation].splice(indexInTableauPile));
+                    } 
+                    //selected card was The top card of the draw pile
+                    else if (game.selectedCard === game.deck.drawPile[game.deck.drawPile.length - 1]){
+                        console.log("moving from draw pile to tableau");
+                        tableau.push(game.deck.drawPile.pop());
+                    } else{
+                        console.log("not sure where selected card came from");
+                    }
+                    game.render();
+                }
+            });
             for(let card of tableau){
                 $tableau.append(card.render().on("click", () => {
                     if(!game.selectedCard){
@@ -170,18 +191,6 @@ class Tableau {
                             console.log("legal move, moving...");
                             const tableauLocation = game.tableau.indexOf(game.selectedCard);
                             //selected card was in a tableau
-                            if (tableauLocation !== -1){
-                                const indexInTableauPile = game.tableau.piles[tableauLocation].indexOf(game.selectedCard);
-                                tableau.push(...game.tableau.piles[tableauLocation].splice(indexInTableauPile));
-                            } 
-                            //selected card was The top card of the draw pile
-                            else if (game.selectedCard === game.deck.drawPile[game.deck.drawPile.length - 1]){
-                                console.log("moving from draw pile to tableau");
-                                game.tableau.piles[game.tableau.indexOf(card)].push(game.deck.drawPile.pop());
-                            } else{
-                                console.log("not sure where selected card came from");
-                            }
-                        } else if (tableau.length === 0 && game.selectedCard.suit === "K"){
                             if (tableauLocation !== -1){
                                 const indexInTableauPile = game.tableau.piles[tableauLocation].indexOf(game.selectedCard);
                                 tableau.push(...game.tableau.piles[tableauLocation].splice(indexInTableauPile));
@@ -297,7 +306,8 @@ class Foundations {
 }
 
 const game = new Game();
-game.deck.shuffle();
+//game.deck.shuffle();
+game.deck.cards.reverse();
 game.tableau.deal(game.deck);
 game.render();
 
