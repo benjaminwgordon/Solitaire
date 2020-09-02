@@ -12,19 +12,17 @@ body{
     justify-content: space-between;
 }
 .deck{
-    margin-right: 75px;
-    width:200px;
-    height:300px;
+    margin-right: 20px;
+    width:175px;
+    height:245px;
     background-color:#ff0000;
     border-radius:15px;
     border:2px solid black;
 }
 
 .drawPile{
-    width:200px;
-    height:300px;
-    border-radius:15px;
-    border:2px solid black;
+    width:175px;
+    height:245px;
     position:relative;
 }
 
@@ -45,36 +43,36 @@ body{
 .tableau{
     display:flex;
     flex-direction:column;
-    width:200px;
+    width:175px;
     min-width:200px;
 }
 
 .card{
     display: inline-block;
-    width:200px;
-    height:300px;
+    width:175px;
+    height:245px;
     background-color:white;
     border-radius:15px;
     border:2px solid black;
     position:relative;
     margin-top:0%;
-    margin-bottom: -260px;
+    margin-bottom: -190px;
 }
 
 .card__value{
-position:absolute;
-top:5%;
-left:5%;
-font-size: 1.5em;
+    position:absolute;
+    top:5%;
+    left:10%;
+    font-size: 2em;
 }
 
 .card__suit{
-position:absolute;
-display:block;
-width:15%;
-height:15%;
-top:5%;
-right:10%;
+    position:absolute;
+    display:block;
+    width:15%;
+    height:15%;
+    top:5%;
+    right:10%;
 }
 
 .card__suit--club{
@@ -102,22 +100,21 @@ right:10%;
     display:flex;
     flex-direction:row;
     justify-content: right;
+    margin-left: 100px;
 }
 
 .foundation{
-    max-width:200px;
+    max-width:175px;
 }
 
 .foundation--empty{
     display: inline-block;
     align-self: flex-start;
-    width:200px;
-    height:300px;
+    width:175px;
+    height:245px;
     border-radius:15px;
     border:2px solid black;
-    position:relative;
-    margin-top:0%;
-    margin-bottom: -120%;
+    margin-left: 10px;
 }
 
 .card--face-down{
@@ -136,9 +133,29 @@ right:10%;
     display:flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 75px;
     width: 75%;
     margin:auto;
     margin-top:75px;
     margin-bottom: 75px;
+}
+
+.menu{
+    height: 50px;
+    display:flex;
+    width:75%;
+    justify-content: space-between;
+    margin:auto;
+}
+
+.title{
+    margin:0;
+    padding:0;
+    font-size: 3em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.new-game{
+    height:100%;
+    font-size: 1.5em;
 }

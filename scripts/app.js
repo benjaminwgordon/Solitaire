@@ -23,7 +23,7 @@ class Card{
                 snap:false, 
                 zIndex:100,
                 drag: ()=> {app.game.selectedCard = this;},
-                stop: ()=> {app.game.selectedCard = null;},
+                stop: ()=> {app.game.selectedCard = null;}
             });
         }
         if(this === app.game.selectedCard){
@@ -269,7 +269,7 @@ class Foundations {
             //put ace into empty pile
             if (foundation.length === 0){
                 if( app.game.selectedCard.value === "A"){
-                const tableauLocation = app.game.tableau.indexOf(game.selectedCard);
+                const tableauLocation = app.game.tableau.indexOf(app.game.selectedCard);
                     //selected card was in a tableau
                     if (tableauLocation !== -1){
                         const indexInTableauPile = app.game.tableau.piles[tableauLocation].indexOf(app.game.selectedCard);
@@ -326,14 +326,16 @@ class Foundations {
 }
 
 class Menu{
-    constructor(){
-
-    }
+    constructor(){}
 
     render(){
         const $menu = $(".menu").length > 0 ? $(".menu") : $("<div />").addClass("menu");
         $menu.empty();
-        $menu.append($("<button />").text("Start Game"));
+        $menu.append($("<h1 />").text("Klondike Solitaire").addClass("title"));
+        $menu.append($("<button />").text("New Game").addClass("new-game").on("click", () => {
+            app.game = new Game();
+            app.game.render();
+        }));
         return $menu;
     }
 }
@@ -354,9 +356,6 @@ class App{
 }
 
 
-
 const app = new App(new Game(), new Menu());
 app.render();
-
-
 
