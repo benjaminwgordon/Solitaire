@@ -17,8 +17,13 @@ class Card{
         if(!this.faceUp){
             $card.addClass("card--face-down");
         } else{
-            $card.draggable();
-            $card.droppable();
+            $card.draggable({
+                revert:"invalid", 
+                snap:false, 
+                zIndex:100,
+                drag: ()=> {game.selectedCard = this;},
+                stop: ()=> {game.selectedCard = null;}
+            });
         }
         if(this === game.selectedCard){
             $card.addClass("card--selected");
@@ -236,11 +241,15 @@ class Tableau {
         $tableauContainer.empty();
         for(let tableau of this.piles){
             const $tableau = $("<div />").addClass("tableau");
-            $tableau.on("click", (e) => {this.handleTableauClick(tableau)});
+            $tableau.droppable({
+                drop: ()=>{this.handleTableauClick(tableau);}
+            })
             for(let card of tableau){
                 const $card = card.render();
-                if(card.faceUp){
-                    $card.on("click", (e) => {this.handleTableauCardClick(card, tableau)});
+                if(card.faceUp && tableau.indexOf(card) === tableau.length - 1){
+                    $card.droppable({
+                        drop: () => {this.handleTableauCardClick(card, tableau)},
+                    });
                 }
                 $card.appendTo($tableau);
             }
@@ -325,7 +334,11 @@ class Foundations {
         $foundationContainer.empty();
         for(let foundation of this.piles){
             const $foundation = $("<div />").addClass("foundation");
-            $foundation.on("click", () => {this.handleFoundationClick(foundation)});
+            $foundation.droppable({
+                drop:(event, ui)=>{
+                    console.log("dropped");
+                    this.handleFoundationClick(foundation)
+                }});
             if(foundation[0]){
                 $foundation.addClass("card");
                 const $foundationValue = $("<div />").text(foundation[foundation.length - 1].value).addClass("card__value");;
