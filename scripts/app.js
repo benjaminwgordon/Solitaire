@@ -222,9 +222,11 @@ class Tableau {
         $tableauContainer.empty();
         for(let tableau of this.piles){
             const $tableau = $("<div />").addClass("tableau");
-            $tableau.droppable({
-                drop: ()=>{this.handleTableauClick(tableau);}
-            })
+            if(tableau.length === 0){
+                $tableau.droppable({
+                    drop: ()=>{this.handleTableauClick(tableau);}
+                })
+            }
             for(let card of tableau){
                 const $card = card.render();
                 if(card.faceUp && tableau.indexOf(card) === tableau.length - 1){

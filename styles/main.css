@@ -1,3 +1,7 @@
+*{
+    user-select:none;
+}
+
 body{
     background-color:rgb(34, 92, 34);
     width:80%;
@@ -12,7 +16,7 @@ body{
     justify-content: space-between;
 }
 .deck{
-    margin-right: 20px;
+    margin-right: 40px;
     width:175px;
     height:245px;
     background-color:#ff0000;
@@ -137,6 +141,7 @@ body{
     margin:auto;
     margin-top:75px;
     margin-bottom: 75px;
+
 }
 
 .menu{
@@ -148,8 +153,6 @@ body{
 }
 
 .title{
-    margin:0;
-    padding:0;
     font-size: 3em;
     font-weight: bold;
     text-align: center;
