@@ -1,5 +1,7 @@
 body{
-    background-color:rgb(34, 92, 34)
+    background-color:rgb(34, 92, 34);
+    width:80%;
+    margin:auto;
 }
 .game{
     display:flex;
@@ -43,6 +45,8 @@ body{
 .tableau{
     display:flex;
     flex-direction:column;
+    width:200px;
+    min-width:200px;
 }
 
 .card{
@@ -97,8 +101,7 @@ right:10%;
 .foundationContainer{
     display:flex;
     flex-direction:row;
-    justify-content: space-between;
-    width:56%;
+    justify-content: right;
 }
 
 .foundation{
