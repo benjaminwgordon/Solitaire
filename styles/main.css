@@ -3,8 +3,8 @@
 }
 
 body{
-    background-color:black;
-    margin:auto;
+    background: rgb(45,222,255);
+    background: radial-gradient(circle, rgba(45,222,255,1) 0%, rgba(10,76,88,1) 93%, rgba(0,98,116,1) 100%);
     height:100vh;
     overflow:hidden;
 }
@@ -12,9 +12,10 @@ body{
 #app{
     margin:auto;
     background-color: #247024;
-    height:100%;
+    height:98vh;
     width:70%;
     overflow:hidden;
+    border: 4px solid black;
 }
 .game{
     display:flex;
