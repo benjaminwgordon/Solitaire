@@ -118,6 +118,19 @@ class Deck{
     }
 }
 
+class Menu{
+    constructor(){
+
+    }
+
+    render(){
+        const $menu = $(".menu").length > 0 ? $(".menu") : $("<div />").addClass("menu");
+        $menu.empty();
+        $menu.append($("<button />").text("Start Game"));
+        return $menu;
+    }
+}
+
 class Game{
     constructor(){
         this.deck = new Deck();
@@ -135,6 +148,7 @@ class Game{
         $topRow.append(this.deck.render());
         $topRow.append(this.foundations.render());
         $game.append(this.tableau.render());
+        $("body").append(menu.render());
         $("body").append($game);
     }
 }
@@ -296,6 +310,9 @@ class Foundations {
             }
         game.tableau.checkForEmptyPiles();
         game.selectedCard = null;
+        if (this.isGameWon()){
+
+        }
         game.render();
     }
     }
@@ -321,6 +338,7 @@ class Foundations {
     }
 }
 
+const menu = new Menu();
 const game = new Game();
 game.deck.shuffle();
 game.tableau.deal(game.deck);
