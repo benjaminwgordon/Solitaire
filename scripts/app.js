@@ -76,20 +76,19 @@ class Deck{
     }
 
     draw(){
-        console.log(this.cards.length)
-        const topDeck = this.deal(1)[0];
-        this.drawPile.push(topDeck);
-        if (this.drawPile.length > 0){
-            this.drawPile[this.drawPile.length - 1].faceUp = true;
+        if(!(this.cards.length + this.drawPile.length === 0)){
+            const topDeck = this.deal(1)[0];
+            this.drawPile.push(topDeck);
+            if (this.drawPile.length > 0){
+                this.drawPile[this.drawPile.length - 1].faceUp = true;
+            }
+            game.render();
         }
-        game.render();
     }
 
     deal(num){
         if(this.cards.length === 0){
             this.cards = [...this.drawPile.reverse()];
-            console.log(this.cards);
-
             this.drawPile = [];
         }
         return this.cards.splice(this.cards.length - num);
