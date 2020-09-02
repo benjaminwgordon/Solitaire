@@ -16,6 +16,9 @@ class Card{
         $card.append($("<div />").text(this.value).addClass("card__value"))
         if(!this.faceUp){
             $card.addClass("card--face-down");
+        } else{
+            $card.draggable();
+            $card.droppable();
         }
         if(this === game.selectedCard){
             $card.addClass("card--selected");
