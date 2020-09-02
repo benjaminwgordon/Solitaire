@@ -20,11 +20,13 @@ class Card{
             $card.draggable({
                 revert:"invalid", 
                 revertDuration: 100,
+                containment: ".game", 
                 snap:false, 
                 zIndex:100,
                 drag: ()=> {app.game.selectedCard = this;},
                 stop: ()=> {app.game.selectedCard = null;}
-            });
+            })
+            .data("Value", this.value);
         }
         if(this === app.game.selectedCard){
             $card.addClass("card--selected");
@@ -185,12 +187,13 @@ class Tableau {
                 } 
                 //selected card was The top card of the draw pile
                 else if (app.game.selectedCard === app.game.deck.drawPile[app.game.deck.drawPile.length - 1]){
-                    tableau.push(game.deck.drawPile.pop());
+                    tableau.push(app.game.deck.drawPile.pop());
                 }
                 app.game.selectedCard = null;
                 app.game.render();
             }
         }
+        app.game.render();
     }
 
     //handles clicks on cards within the tableau pile
@@ -224,7 +227,7 @@ class Tableau {
             const $tableau = $("<div />").addClass("tableau");
             if(tableau.length === 0){
                 $tableau.droppable({
-                    drop: ()=>{this.handleTableauClick(tableau);}
+                    drop: ()=>{this.handleTableauClick(tableau)},
                 })
             }
             for(let card of tableau){
@@ -333,8 +336,8 @@ class Menu{
     render(){
         const $menu = $(".menu").length > 0 ? $(".menu") : $("<div />").addClass("menu");
         $menu.empty();
-        $menu.append($("<h1 />").text("Klondike Solitaire").addClass("title"));
-        $menu.append($("<button />").text("New Game").addClass("new-game").on("click", () => {
+        $menu.append($("<img />").addClass("title").attr("src", "card_images/KlondikeSolitaire.svg"));
+        $menu.append($("<div />").addClass("new-game").on("click", () => {
             app.game = new Game();
             app.game.render();
         }));
