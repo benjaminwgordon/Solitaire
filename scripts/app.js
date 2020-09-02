@@ -19,10 +19,11 @@ class Card{
         } else{
             $card.draggable({
                 revert:"invalid", 
+                revertDuration: 100,
                 snap:false, 
                 zIndex:100,
                 drag: ()=> {game.selectedCard = this;},
-                stop: ()=> {game.selectedCard = null;}
+                stop: ()=> {game.selectedCard = null;},
             });
         }
         if(this === game.selectedCard){
