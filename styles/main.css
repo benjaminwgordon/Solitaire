@@ -170,19 +170,27 @@ body{
 
 
 .new-game{
-    border: 2px solid black;
-    text-align:center;
-    padding:auto;
-    margin:auto;
-    width: 350px;
-    min-width:350px;
-    height: 100px;
-    font-size: 1.5em;
-    background-image: url(../card_images/NewGame.svg);
-    background-size:contain;
-    background-repeat: no-repeat;
-    background-position:center;
-    border-radius: 25px;
+    background-color:white;
+    background: linear-gradient(to bottom, rgb(255, 255, 84), gold);
+    font-size:1.25em;
+    margin:0;
+    height: 50px;
+    padding: 5px;
+    color:black;
+    border: none;
+    border-radius: 50px;
+}
+.new-game:hover{
+    background: linear-gradient(to bottom right,gold,rgb(255, 255, 84));
+}
+
+.new-game:active{
+    position:relative;
+    top:1px;
+}
+
+.new-game:focus{
+    outline-width: 0;
 }
 
 .win{

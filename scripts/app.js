@@ -27,6 +27,7 @@ class Card{
                 drag: ()=> {
                     app.game.selectedCard = this;
                     let zIndex = 2;
+                    //moves all cards in stack under selected when dragged
                     $.each($card.parent().children().not(".card--face-down"), function(key, value) {
                         $(value).css("left", $card.css("left"))
                             .css("top", $card.css("top"))
@@ -34,7 +35,6 @@ class Card{
                     })},
                 stop: ()=> {app.game.selectedCard = null; app.game.render()}
             })
-            .data("Value", this.value);
         }
         if(this === app.game.selectedCard){
             $card.addClass("card--selected");
@@ -142,8 +142,7 @@ class Game{
         //foundations are the 4 empty piles that the player builds into throughout the game
         this.foundations = new Foundations();
         this.selectedCard = null;
-        //this.deck.shuffle();
-        this.deck.cards = this.deck.cards.reverse();
+        this.deck.shuffle();
         this.tableau.deal(this.deck);
     }
 
@@ -207,21 +206,16 @@ class Tableau {
 
     //handles clicks on cards within the tableau pile
     handleTableauCardClick(card, tableau){
-        if(!app.game.selectedCard){
-            app.game.selectedCard = card;
-        } else{
-            if (app.game.selectedCard.isValidChild(card)){
-                const tableauLocation = app.game.tableau.indexOf(app.game.selectedCard);
-                //selected card was in a tableau
-                if (tableauLocation !== -1){
-                    const indexInTableauPile = app.game.tableau.piles[tableauLocation].indexOf(app.game.selectedCard);
-                    tableau.push(...app.game.tableau.piles[tableauLocation].splice(indexInTableauPile));
-                } 
-                //selected card was The top card of the draw pile
-                else if (app.game.selectedCard === app.game.deck.drawPile[app.game.deck.drawPile.length - 1]){
-                    app.game.tableau.piles[app.game.tableau.indexOf(card)].push(app.game.deck.drawPile.pop());
-                } else{
-                }
+        if (app.game.selectedCard.isValidChild(card)){
+            const tableauLocation = app.game.tableau.indexOf(app.game.selectedCard);
+            //selected card was in a tableau
+            if (tableauLocation !== -1){
+                const indexInTableauPile = app.game.tableau.piles[tableauLocation].indexOf(app.game.selectedCard);
+                tableau.push(...app.game.tableau.piles[tableauLocation].splice(indexInTableauPile));
+            } 
+            //selected card was The top card of the draw pile
+            else if (app.game.selectedCard === app.game.deck.drawPile[app.game.deck.drawPile.length - 1]){
+                app.game.tableau.piles[app.game.tableau.indexOf(card)].push(app.game.deck.drawPile.pop());
             }
             app.game.selectedCard = null;
         }
@@ -278,23 +272,10 @@ class Foundations {
     }
 
     handleFoundationClick(foundation){
-        if(app.game.selectedCard){
-            //put ace into empty pile
-            if (foundation.length === 0){
-                if( app.game.selectedCard.value === "A"){
-                const tableauLocation = app.game.tableau.indexOf(app.game.selectedCard);
-                    //selected card was in a tableau
-                    if (tableauLocation !== -1){
-                        const indexInTableauPile = app.game.tableau.piles[tableauLocation].indexOf(app.game.selectedCard);
-                        foundation.push(app.game.tableau.piles[tableauLocation].pop());
-                    } 
-                    //selected card was The top card of the draw pile
-                    else if (app.game.selectedCard === app.game.deck.drawPile[app.game.deck.drawPile.length - 1]){
-                        foundation.push(app.game.deck.drawPile.pop());
-                    }
-                }
-            } else if((foundation[0].suit === app.game.selectedCard.suit && values.indexOf(app.game.selectedCard.value) === values.indexOf(foundation[foundation.length - 1].value) + 1)){
-                const tableauLocation = app.game.tableau.indexOf(app.game.selectedCard);
+        //put ace into empty pile
+        if (foundation.length === 0){
+            if( app.game.selectedCard.value === "A"){
+            const tableauLocation = app.game.tableau.indexOf(app.game.selectedCard);
                 //selected card was in a tableau
                 if (tableauLocation !== -1){
                     const indexInTableauPile = app.game.tableau.piles[tableauLocation].indexOf(app.game.selectedCard);
@@ -305,8 +286,19 @@ class Foundations {
                     foundation.push(app.game.deck.drawPile.pop());
                 }
             }
+        } else if((foundation[0].suit === app.game.selectedCard.suit && values.indexOf(app.game.selectedCard.value) === values.indexOf(foundation[foundation.length - 1].value) + 1)){
+            const tableauLocation = app.game.tableau.indexOf(app.game.selectedCard);
+            //selected card was in a tableau
+            if (tableauLocation !== -1){
+                const indexInTableauPile = app.game.tableau.piles[tableauLocation].indexOf(app.game.selectedCard);
+                foundation.push(app.game.tableau.piles[tableauLocation].pop());
+            } 
+            //selected card was The top card of the draw pile
+            else if (app.game.selectedCard === app.game.deck.drawPile[app.game.deck.drawPile.length - 1]){
+                foundation.push(app.game.deck.drawPile.pop());
+            }
+            
         app.game.tableau.checkForEmptyPiles();
-        app.game.selectedCard = null;
         app.game.render();
         if (this.isGameWon()){
             console.log("game won");
@@ -321,9 +313,8 @@ class Foundations {
         for(let foundation of this.piles){
             const $foundation = $("<div />").addClass("foundation");
             $foundation.droppable({
-                drop:(event, ui)=>{
-                    this.handleFoundationClick(foundation)
-                }});
+                drop:(event, ui)=>{ this.handleFoundationClick(foundation)}
+            });
             if(foundation[0]){
                 $foundation.addClass("card");
                 const $foundationValue = $("<div />").text(foundation[foundation.length - 1].value).addClass("card__value");;
@@ -346,7 +337,7 @@ class Menu{
         const $menu = $(".menu").length > 0 ? $(".menu") : $("<div />").addClass("menu");
         $menu.empty();
         $menu.append($("<img />").addClass("title").attr("src", "card_images/KlondikeSolitaire.svg"));
-        $menu.append($("<div />").addClass("new-game").on("click", () => {
+        $menu.append($("<button />").addClass("new-game").on("click", () => {
             app.game = new Game();
             app.game.render();
         }));
