@@ -92,22 +92,22 @@ body{
 }
 
 .card__suit--club{
-    background-image:url(../card_images/club.svg);
+    background-image: url(../card_images/club.svg);
     background-repeat: no-repeat;
 }
 
 .card__suit--spade{
-    background-image:url(../card_images/spade.svg);
+    background-image: url(../card_images/spade.svg);
     background-repeat: no-repeat;
 }
 
 .card__suit--heart{
-    background-image:url(../card_images/heart.svg);
+    background-image: url(../card_images/heart.svg);
     background-repeat: no-repeat;
 }
 
 .card__suit--diamond{
-    background-image:url(../card_images/diamond.svg);
+    background-image: url(../card_images/diamond.svg);
     background-repeat: no-repeat;
 }
 
@@ -140,9 +140,6 @@ body{
 
 .card--face-down > *{
     display:none;
-}
-.card--selected{
-    filter: hue-rotate(90deg)
 }
 
 .top-row{

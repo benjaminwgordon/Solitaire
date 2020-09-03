@@ -13,8 +13,8 @@ class Card{
 
     render(){
         const $card = $("<div />").addClass("card");
-        $card.append($("<div />").addClass(`card__suit--${this.suit}`).addClass("card__suit"));
-        $card.append($("<div />").text(this.value).addClass("card__value"))
+        $card.append($("<dig />").addClass(`card__suit--${this.suit}`).addClass("card__suit"));
+        $card.append($("<div />").text(this.value).addClass("card__value"));
         if(!this.faceUp){
             $card.addClass("card--face-down");
         } else{
@@ -226,23 +226,27 @@ class Tableau {
     render(){
         const $tableauContainer = $(".tableauContainer").length < 1 ? $("<div />").addClass("tableauContainer") : $(".tableauContainer");
         $tableauContainer.empty();
-        for(let tableau of this.piles){
-            const $tableau = $("<div />").addClass("tableau");
-            if(tableau.length === 0){
-                $tableau.droppable({
-                    drop: ()=>{this.handleTableauClick(tableau)},
-                })
-            }
-            for(let card of tableau){
-                const $card = card.render();
-                if(card.faceUp && tableau.indexOf(card) === tableau.length - 1){
-                    $card.droppable({
-                        drop: () => {this.handleTableauCardClick(card, tableau)},
-                    });
+        if (app.game.foundations.isGameWon()){
+            $(".tableauContainer").empty().append($("<img />").attr("src", "card_images/YouWin.svg").addClass("win"));
+            } else{
+            for(let tableau of this.piles){
+                const $tableau = $("<div />").addClass("tableau");
+                if(tableau.length === 0){
+                    $tableau.droppable({
+                        drop: ()=>{this.handleTableauClick(tableau)},
+                    })
                 }
-                $card.appendTo($tableau);
+                for(let card of tableau){
+                    const $card = card.render();
+                    if(card.faceUp && tableau.indexOf(card) === tableau.length - 1){
+                        $card.droppable({
+                            drop: () => {this.handleTableauCardClick(card, tableau)},
+                        });
+                    }
+                    $card.appendTo($tableau);
+                }
+                $tableauContainer.append($tableau);
             }
-            $tableauContainer.append($tableau);
         }
         return $tableauContainer;
     }
@@ -296,10 +300,6 @@ class Foundations {
         }
         app.game.tableau.checkForEmptyPiles();
         app.game.render();
-        if (this.isGameWon()){
-            console.log("game won");
-            $(".tableauContainer").empty().append($("<img />").attr("src", "card_images/YouWin.svg").addClass("win"));
-        }
     }
 
     render(){
