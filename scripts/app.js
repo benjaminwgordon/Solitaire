@@ -345,7 +345,6 @@ class App{
     }
 }
 
-
 const app = new App(new Game(), new Menu());
 app.render();
 
