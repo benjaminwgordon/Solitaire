@@ -48,17 +48,9 @@ class Card{
             return false;
         } else{
             if (this.suit === "spade" || this.suit === "club"){
-                if(target.suit === "heart" || target.suit === "diamond"){
-                    return true;
-                } else{
-                    return false;
-                }
+                return target.suit === "heart" || target.suit === "diamond"
             } else{
-                if(target.suit === "spade" || target.suit === "club"){
-                    return true;
-                } else{
-                    return false;
-                }
+                return target.suit === "spade" || target.suit === "club"
             }
         }
     }
@@ -77,12 +69,10 @@ class Deck{
     // Fisher-Yates shuffle implementation from https://bost.ocks.org/mike/shuffle/
     shuffle(){
         var m = this.cards.length, t, i;
-        
         // While there remain elements to shuffle…
         while (m) {
             // Pick a remaining element…
             i = Math.floor(Math.random() * m--);
-        
             // And swap it with the current element.
             t = this.cards[m];
             this.cards[m] = this.cards[i];
@@ -277,7 +267,7 @@ class Foundations {
 
 
     validFoundationDrop(foundation){
-        return (foundation[0].suit === app.game.selectedCard.suit && values.indexOf(app.game.selectedCard.value) === values.indexOf(foundation[foundation.length - 1].value) + 1)
+        return (foundation.length > 0 && (foundation[0].suit === app.game.selectedCard.suit && values.indexOf(app.game.selectedCard.value) === values.indexOf(foundation[foundation.length - 1].value) + 1))
     }
 
     moveCardToFoundation(foundation){
