@@ -3,6 +3,7 @@
  */
 const suits = ["spade", "club", "heart", "diamond"];
 const values = ['A',2,3,4,5,6,7,8,9,10,'J','Q','K'];
+
 class Card{
     constructor(suit, value){
         this.suit = suit;
@@ -23,8 +24,15 @@ class Card{
                 containment: ".game", 
                 snap:false, 
                 zIndex:100,
-                drag: ()=> {app.game.selectedCard = this;},
-                stop: ()=> {app.game.selectedCard = null;}
+                drag: ()=> {
+                    app.game.selectedCard = this;
+                    let zIndex = 2;
+                    $.each($card.parent().children().not(".card--face-down"), function(key, value) {
+                        $(value).css("left", $card.css("left"))
+                            .css("top", $card.css("top"))
+                            .css("z-index", ++zIndex)
+                    })},
+                stop: ()=> {app.game.selectedCard = null; app.game.render()}
             })
             .data("Value", this.value);
         }
