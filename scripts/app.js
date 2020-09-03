@@ -291,11 +291,7 @@ class Foundations {
 
     handleFoundationClick(foundation){
         //put ace into empty pile
-        if (foundation.length === 0){
-            if( app.game.selectedCard.value === "A"){
-                this.moveCardToFoundation(foundation);
-            }
-        } else if(this.validFoundationDrop(foundation)){
+        if ((foundation.length === 0 && app.game.selectedCard.value === "A") || this.validFoundationDrop(foundation)){
             this.moveCardToFoundation(foundation);
         }
         app.game.tableau.checkForEmptyPiles();
