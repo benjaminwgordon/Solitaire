@@ -271,40 +271,39 @@ class Foundations {
         return true;
     }
 
+
+    validFoundationDrop(foundation){
+        return (foundation[0].suit === app.game.selectedCard.suit && values.indexOf(app.game.selectedCard.value) === values.indexOf(foundation[foundation.length - 1].value) + 1)
+    }
+
+    moveCardToFoundation(foundation){
+        const tableauLocation = app.game.tableau.indexOf(app.game.selectedCard);
+        //selected card was in a tableau
+        if (tableauLocation !== -1){
+            const indexInTableauPile = app.game.tableau.piles[tableauLocation].indexOf(app.game.selectedCard);
+            foundation.push(app.game.tableau.piles[tableauLocation].pop());
+        } 
+        //selected card was The top card of the draw pile
+        else if (app.game.selectedCard === app.game.deck.drawPile[app.game.deck.drawPile.length - 1]){
+            foundation.push(app.game.deck.drawPile.pop());
+        }
+    }
+
     handleFoundationClick(foundation){
         //put ace into empty pile
         if (foundation.length === 0){
             if( app.game.selectedCard.value === "A"){
-            const tableauLocation = app.game.tableau.indexOf(app.game.selectedCard);
-                //selected card was in a tableau
-                if (tableauLocation !== -1){
-                    const indexInTableauPile = app.game.tableau.piles[tableauLocation].indexOf(app.game.selectedCard);
-                    foundation.push(app.game.tableau.piles[tableauLocation].pop());
-                } 
-                //selected card was The top card of the draw pile
-                else if (app.game.selectedCard === app.game.deck.drawPile[app.game.deck.drawPile.length - 1]){
-                    foundation.push(app.game.deck.drawPile.pop());
-                }
+                this.moveCardToFoundation(foundation);
             }
-        } else if((foundation[0].suit === app.game.selectedCard.suit && values.indexOf(app.game.selectedCard.value) === values.indexOf(foundation[foundation.length - 1].value) + 1)){
-            const tableauLocation = app.game.tableau.indexOf(app.game.selectedCard);
-            //selected card was in a tableau
-            if (tableauLocation !== -1){
-                const indexInTableauPile = app.game.tableau.piles[tableauLocation].indexOf(app.game.selectedCard);
-                foundation.push(app.game.tableau.piles[tableauLocation].pop());
-            } 
-            //selected card was The top card of the draw pile
-            else if (app.game.selectedCard === app.game.deck.drawPile[app.game.deck.drawPile.length - 1]){
-                foundation.push(app.game.deck.drawPile.pop());
-            }
-            
+        } else if(this.validFoundationDrop(foundation)){
+            this.moveCardToFoundation(foundation);
+        }
         app.game.tableau.checkForEmptyPiles();
         app.game.render();
         if (this.isGameWon()){
             console.log("game won");
             $(".tableauContainer").empty().append($("<img />").attr("src", "card_images/YouWin.svg").addClass("win"));
         }
-    }
     }
 
     render(){
