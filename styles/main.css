@@ -184,3 +184,8 @@ body{
     background-position:center;
     border-radius: 25px;
 }
+
+.win{
+    margin:auto;
+    height: 300px;
+}

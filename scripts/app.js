@@ -142,7 +142,8 @@ class Game{
         //foundations are the 4 empty piles that the player builds into throughout the game
         this.foundations = new Foundations();
         this.selectedCard = null;
-        this.deck.shuffle();
+        //this.deck.shuffle();
+        this.deck.cards = this.deck.cards.reverse();
         this.tableau.deal(this.deck);
     }
 
@@ -269,12 +270,11 @@ class Foundations {
 
     isGameWon(){
         for (let pile of this.piles){
-            if (pile.length === 13){
-                return true;
-            } else {
-                return false
+            if (pile.length !== 13){
+                return false;
             }
         }
+        return true;
     }
 
     handleFoundationClick(foundation){
@@ -305,12 +305,13 @@ class Foundations {
                     foundation.push(app.game.deck.drawPile.pop());
                 }
             }
-            app.game.tableau.checkForEmptyPiles();
-            app.game.selectedCard = null;
-        if (this.isGameWon()){
-
-        }
+        app.game.tableau.checkForEmptyPiles();
+        app.game.selectedCard = null;
         app.game.render();
+        if (this.isGameWon()){
+            console.log("game won");
+            $(".tableauContainer").empty().append($("<img />").attr("src", "card_images/YouWin.svg").addClass("win"));
+        }
     }
     }
 
