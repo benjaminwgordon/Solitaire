@@ -23,12 +23,12 @@ class Card{
                 revertDuration: 100,
                 containment: ".game", 
                 snap:false, 
-                zIndex:100,
+                zIndex:9,
                 drag: ()=> {
                     app.game.selectedCard = this;
-                    let zIndex = 2;
+                    let zIndex = 10;
                     //moves all cards in stack under selected when dragged
-                    $.each($card.parent().children().not(".card--face-down"), function(key, value) {
+                    $.each($card.nextAll().not(".card--face-down"), function(key, value) {
                         $(value).css("left", $card.css("left"))
                             .css("top", $card.css("top"))
                             .css("z-index", ++zIndex)
