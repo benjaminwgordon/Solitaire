@@ -30,5 +30,5 @@ Standard game of solitaire, modeled on the classic windows XP Klondike solitaire
 * draw 3
 * click and drag movement
 * auto finish completed games
-* face down pile cards suit and number doesnt exist until flipped (prevents cheating by inspecting)
+* [unnecessary, replaced by css:hiden]~~face down pile cards suit and number doesnt exist until flipped (prevents cheating by inspecting)~~
 
