@@ -12,9 +12,8 @@ body{
 #app{
     margin:auto;
     background-color: #247024;
-    height:98vh;
-    min-width:1500px;
-    width:70%;
+    height:97vh;
+    width:1200px;
     overflow:hidden;
     border: 4px solid black;
 }
@@ -28,8 +27,8 @@ body{
 }
 .deck{
     margin-right: 40px;
-    width:175px;
-    height:245px;
+    width:120px;
+    height:170px;
     background-image: url(../card_images/back.svg);
     background-size: contain;
     border-radius:15px;
@@ -37,8 +36,8 @@ body{
 }
 
 .drawPile{
-    width:175px;
-    height:245px;
+    width:120px;
+    height:170px;
     position:relative;
 }
 
@@ -65,21 +64,21 @@ body{
 
 .card{
     display: inline-block;
-    width:175px;
-    height:245px;
+    width:120px;
+    height:170px;
     background-color:white;
     border-radius:15px;
     border:2px solid black;
     position:relative;
     margin-top:0%;
-    margin-bottom: -190px;
+    margin-bottom: -140px;
 }
 
 .card__value{
     position:absolute;
     top:5%;
     left:10%;
-    font-size: 2em;
+    font-size: 1.5em;
 }
 
 .card__suit{
@@ -126,8 +125,8 @@ body{
 .foundation--empty{
     display: inline-block;
     align-self: flex-start;
-    width:175px;
-    height:245px;
+    width:120px;
+    height:170px;
     border-radius:15px;
     border:2px solid black;
     margin-left: 10px;
@@ -159,38 +158,65 @@ body{
     width:100%;
     justify-content: space-between;
     margin:auto;
+    position:relative;
 }
 
 .title{
     height:120px;
 }
 
-
-.new-game{
+.new-game-container{
+    position:relative;
+    right:0%;
+    top:0%;
     background-color:white;
     background: linear-gradient(to bottom, rgb(255, 255, 84), gold);
-    font-size:1.25em;
-    margin:0;
     height: 50px;
-    padding: 5px;
-    color:black;
-    border: none;
-    border-radius: 50px;
+    width:50px;
+    border-bottom-left-radius: 15px;
+    transition: 0.3s ease-in;
+    border:none;
 }
-.new-game:hover{
-    background: linear-gradient(to bottom right,gold,rgb(255, 255, 84));
+
+.new-game{
+    background: linear-gradient(to bottom, green, rgb(10,255,10));
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-size:1.25em;
+    margin:0px;
+    margin-top: -2px;
+    border: 1px solid white;
+    border-bottom-left-radius:30px;
+    padding: 5px;
+    height:50%;
+    color:black;
+    font-size: 1.1em;
+    background-color:#44c767;
+	border:1px solid #18ab29;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:16px 31px;
+	text-decoration:none;
+    text-shadow:0px 1px 0px #2f6627;
+    outline:none;
 }
 
 .new-game:active{
-    position:relative;
+	position:relative;
     top:1px;
 }
 
-.new-game:focus{
-    outline-width: 0;
+.new-game:hover{
+    background-color:#5cbf2a;
 }
 
 .win{
     margin:auto;
     height: 300px;
 }
+
+        

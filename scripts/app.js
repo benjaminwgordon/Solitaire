@@ -322,7 +322,7 @@ class Menu{
         const $menu = $(".menu").length > 0 ? $(".menu") : $("<div />").addClass("menu");
         $menu.empty();
         $menu.append($("<img />").addClass("title").attr("src", "card_images/KlondikeSolitaire.svg"));
-        $menu.append($("<button />").addClass("new-game").on("click", () => {
+        $menu.append($("<button />").addClass("new-game").text("New Game").on("click", () => {
             app.game = new Game();
             app.game.render();
         }));
