@@ -58,8 +58,7 @@ body{
 .tableau{
     display:flex;
     flex-direction:column;
-    width:175px;
-    min-width:200px;
+    min-width:120px;
 }
 
 .card{
@@ -179,7 +178,6 @@ body{
 }
 
 .new-game{
-    background: linear-gradient(to bottom, green, rgb(10,255,10));
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -192,11 +190,10 @@ body{
     height:50%;
     color:black;
     font-size: 1.1em;
-    background-color:#44c767;
+    background-color:#5cbf2a;
 	border:1px solid #18ab29;
 	display:inline-block;
 	cursor:pointer;
-	color:#ffffff;
 	font-family:Arial;
 	font-size:17px;
 	padding:16px 31px;
@@ -211,7 +208,8 @@ body{
 }
 
 .new-game:hover{
-    background-color:#5cbf2a;
+    background-color:#44c767;
+	border:1px solid #18ab29;
 }
 
 .win{
