@@ -29,5 +29,3 @@ Standard game of solitaire, modeled on the classic windows XP Klondike solitaire
 ## Icebox Features: (I think I'll have time to implement all of these and more)
 * click and drag movement
 * auto finish completed games
-* [unnecessary, replaced by css:hidden] ~~face down pile cards suit and number doesnt exist until flipped (prevents cheating by inspecting)~~
-
