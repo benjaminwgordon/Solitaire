@@ -1,5 +1,8 @@
 # Solitaire
 
+## Play it live now!
+[Link to hosted page](https://benjaminwgordon.github.io/Solitaire/)
+
 ## User story
 User presented with loading screen with green felt background image and a centered start button
 When the button is pressed, shuffle and deal from a deck of face down playing cards, stacking into standard 7 pile klondike setup
